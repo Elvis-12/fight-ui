@@ -1,6 +1,5 @@
 // src/services/auth/authContext.tsx
-
-import {
+import React, {
   createContext,
   useContext,
   useState,
@@ -13,9 +12,9 @@ import authService, {
   SignupRequest,
   TwoFactorAuthRequest,
   PasswordResetRequest,
-} from "./authService";
+} from "../auth/authService";
 
-// Define the shape of the auth context
+// Define the auth context type
 interface AuthContextType {
   user: JwtResponse | null;
   loading: boolean;
@@ -36,10 +35,10 @@ interface AuthContextType {
   clearError: () => void;
 }
 
-// Create the auth context with default values
+// Create the auth context
 const AuthContext = createContext<AuthContextType>({
   user: null,
-  loading: false,
+  loading: true,
   error: null,
   isAuthenticated: false,
   isAdmin: false,
@@ -66,18 +65,18 @@ const AuthContext = createContext<AuthContextType>({
   },
 });
 
-// Define props for the AuthProvider component
+// Auth provider props
 interface AuthProviderProps {
   children: ReactNode;
 }
 
 // Create the AuthProvider component
-export const AuthProvider = ({ children }: AuthProviderProps) => {
+export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const [user, setUser] = useState<JwtResponse | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
 
-  // Initialize user from localStorage when the component mounts
+  // Initialize user from localStorage when component mounts
   useEffect(() => {
     const initializeAuth = () => {
       try {
@@ -110,8 +109,8 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
       }
 
       return response;
-    } catch (err) {
-      const message = err instanceof Error ? err.message : "Login failed";
+    } catch (err: any) {
+      const message = err?.response?.data?.message || "Login failed";
       setError(message);
       throw err;
     } finally {
@@ -133,9 +132,8 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
       );
       setUser(response);
       return response;
-    } catch (err) {
-      const message =
-        err instanceof Error ? err.message : "2FA verification failed";
+    } catch (err: any) {
+      const message = err?.response?.data?.message || "2FA verification failed";
       setError(message);
       throw err;
     } finally {
@@ -151,9 +149,8 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
     setError(null);
     try {
       return await authService.register(signupData);
-    } catch (err) {
-      const message =
-        err instanceof Error ? err.message : "Registration failed";
+    } catch (err: any) {
+      const message = err?.response?.data?.message || "Registration failed";
       setError(message);
       throw err;
     } finally {
@@ -169,9 +166,9 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
     setError(null);
     try {
       return await authService.requestPasswordReset(email);
-    } catch (err) {
+    } catch (err: any) {
       const message =
-        err instanceof Error ? err.message : "Password reset request failed";
+        err?.response?.data?.message || "Password reset request failed";
       setError(message);
       throw err;
     } finally {
@@ -187,9 +184,8 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
     setError(null);
     try {
       return await authService.resetPassword(resetData);
-    } catch (err) {
-      const message =
-        err instanceof Error ? err.message : "Password reset failed";
+    } catch (err: any) {
+      const message = err?.response?.data?.message || "Password reset failed";
       setError(message);
       throw err;
     } finally {

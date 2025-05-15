@@ -1,11 +1,6 @@
-// src/services/auth/authService.ts
+// src/services/api/authService.ts
+import axiosInstance from "src/services/api/axiosInstance";
 
-import axios from "axios";
-
-// API base URL - replace with your Spring Boot API URL
-const API_URL = "http://localhost:8085/api";
-
-// Types
 export interface LoginRequest {
   username: string;
   password: string;
@@ -15,7 +10,6 @@ export interface SignupRequest {
   username: string;
   email: string;
   password: string;
-  role?: string[];
 }
 
 export interface TwoFactorAuthRequest {
@@ -40,29 +34,6 @@ export interface JwtResponse {
   mfaRequired: boolean;
 }
 
-// Create axios instance with default headers
-const axiosInstance = axios.create({
-  baseURL: API_URL,
-  headers: {
-    "Content-Type": "application/json",
-  },
-});
-
-// Add interceptor to include auth token in requests
-axiosInstance.interceptors.request.use(
-  (config) => {
-    const token = localStorage.getItem("token");
-    if (token) {
-      config.headers["Authorization"] = `Bearer ${token}`;
-    }
-    return config;
-  },
-  (error) => {
-    return Promise.reject(error);
-  }
-);
-
-// Auth methods
 const authService = {
   // Login with username and password
   login: async (loginRequest: LoginRequest): Promise<JwtResponse> => {
@@ -120,19 +91,6 @@ const authService = {
       resetRequest
     );
     return response.data;
-  },
-
-  // Refresh access token
-  refreshToken: async (refreshToken: string): Promise<string> => {
-    const response = await axiosInstance.post(
-      `/auth/refresh-token?refreshToken=${refreshToken}`
-    );
-
-    if (response.data.token) {
-      localStorage.setItem("token", response.data.token);
-    }
-
-    return response.data.token;
   },
 
   // Logout user
