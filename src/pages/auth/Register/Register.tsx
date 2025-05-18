@@ -2,168 +2,156 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
-import { useAuth } from "../../../services/auth/authContext";
+import authService from "../../../services/auth/authService";
 import Input from "../../../components/ui/Input";
 import Button from "../../../components/ui/Button";
 import Alert from "../../../components/ui/Alert";
 import Card from "../../../components/ui/Card";
 
-interface RegisterFormValues {
+interface SignupFormValues {
   username: string;
   email: string;
   password: string;
-  confirmPassword: string;
+  role: string; // "user" or "admin"
 }
 
 const Register: React.FC = () => {
-  const { register: registerUser, error, clearError } = useAuth();
-  const navigate = useNavigate();
+  const { register, handleSubmit, formState: { errors } } = useForm<SignupFormValues>();
+  const [localError, setLocalError] = useState<string | null>(null);
+  const [success, setSuccess] = useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [success, setSuccess] = useState("");
+  const navigate = useNavigate();
 
-  const {
-    register,
-    handleSubmit,
-    watch,
-    formState: { errors },
-  } = useForm<RegisterFormValues>();
-
-  const password = watch("password");
-
-  const onSubmit = async (data: RegisterFormValues) => {
-    if (isSubmitting) return;
-
+  const onSubmit = async (data: SignupFormValues) => {
     setIsSubmitting(true);
-    clearError();
-
+    setLocalError(null);
     try {
-      // Remove confirmPassword before sending to API
-      const { confirmPassword, ...registerData } = data;
-
-      const response = await registerUser(registerData);
-      setSuccess(response.message);
-
-      // Redirect to login after a delay
-      setTimeout(() => {
-        navigate("/login");
-      }, 3000);
-    } catch (error) {
-      console.error("Registration error:", error);
+      await authService.register({
+        username: data.username,
+        email: data.email,
+        password: data.password,
+        role: [data.role]
+      });
+      setSuccess("Account created! Redirecting to login...");
+      setTimeout(() => navigate("/login"), 2000);
+    } catch (err: any) {
+      setLocalError(err.response?.data?.message || "Registration failed");
     } finally {
       setIsSubmitting(false);
     }
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-md w-full space-y-8">
-        <div className="text-center">
-          <h1 className="text-3xl font-extrabold text-gray-900">
-            Flight Booking System
-          </h1>
-          <h2 className="mt-6 text-center text-2xl font-bold text-gray-900">
-            Create a new account
-          </h2>
-        </div>
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-indigo-500 via-purple-500 to-pink-500">
+      <div className="w-full max-w-md mx-4">
+        <div className="bg-white/90 backdrop-blur-lg rounded-2xl shadow-xl p-8 transform transition-all duration-300 hover:scale-[1.02]">
+          <div className="text-center mb-8">
+            <h2 className="text-4xl font-bold bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent">
+              Create Account
+            </h2>
+            <p className="text-gray-600 mt-2">Join our flight booking platform</p>
+          </div>
 
-        {error && <Alert type="error" message={error} onClose={clearError} />}
+          {localError && (
+            <div className="mb-6 p-4 bg-red-50 border border-red-200 rounded-lg text-red-600 text-center animate-fade-in">
+              {localError}
+            </div>
+          )}
 
-        {success && (
-          <Alert
-            type="success"
-            message={`${success} Redirecting to login...`}
-          />
-        )}
+          {success && (
+            <div className="mb-6 p-4 bg-green-50 border border-green-200 rounded-lg text-green-600 text-center animate-fade-in">
+              {success}
+            </div>
+          )}
 
-        <Card>
           <form className="space-y-6" onSubmit={handleSubmit(onSubmit)}>
-            <Input
-              id="username"
-              label="Username"
-              type="text"
-              autoComplete="username"
-              error={errors.username?.message}
-              {...register("username", {
-                required: "Username is required",
-                minLength: {
-                  value: 3,
-                  message: "Username must be at least 3 characters",
-                },
-                maxLength: {
-                  value: 20,
-                  message: "Username cannot exceed 20 characters",
-                },
-              })}
-            />
-
-            <Input
-              id="email"
-              label="Email address"
-              type="email"
-              autoComplete="email"
-              error={errors.email?.message}
-              {...register("email", {
-                required: "Email is required",
-                pattern: {
-                  value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
-                  message: "Invalid email address",
-                },
-              })}
-            />
-
-            <Input
-              id="password"
-              label="Password"
-              type="password"
-              autoComplete="new-password"
-              error={errors.password?.message}
-              {...register("password", {
-                required: "Password is required",
-                minLength: {
-                  value: 6,
-                  message: "Password must be at least 6 characters",
-                },
-              })}
-            />
-
-            <Input
-              id="confirmPassword"
-              label="Confirm Password"
-              type="password"
-              autoComplete="new-password"
-              error={errors.confirmPassword?.message}
-              {...register("confirmPassword", {
-                required: "Please confirm your password",
-                validate: (value) =>
-                  value === password || "The passwords do not match",
-              })}
-            />
-
-            <div>
-              <Button
-                type="submit"
-                variant="primary"
-                className="w-full"
-                isLoading={isSubmitting}
-                disabled={!!success}
-              >
-                Sign up
-              </Button>
+            <div className="space-y-2">
+              <label className="block text-sm font-medium text-gray-700">Username</label>
+              <input
+                className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all duration-200"
+                {...register("username", { required: "Username is required" })}
+                autoComplete="username"
+                placeholder="Choose a username"
+              />
+              {errors.username && (
+                <span className="text-sm text-red-500 animate-fade-in">{errors.username.message}</span>
+              )}
             </div>
 
-            <div className="text-center">
-              <span className="text-sm text-gray-600">
-                Already have an account?
-              </span>{" "}
-              <Link
-                to="/login"
-                className="text-sm font-medium text-primary-600 hover:text-primary-500"
+            <div className="space-y-2">
+              <label className="block text-sm font-medium text-gray-700">Email</label>
+              <input
+                type="email"
+                className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all duration-200"
+                {...register("email", { required: "Email is required" })}
+                autoComplete="email"
+                placeholder="Enter your email"
+              />
+              {errors.email && (
+                <span className="text-sm text-red-500 animate-fade-in">{errors.email.message}</span>
+              )}
+            </div>
+
+            <div className="space-y-2">
+              <label className="block text-sm font-medium text-gray-700">Password</label>
+              <input
+                type="password"
+                className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all duration-200"
+                {...register("password", { required: "Password is required" })}
+                autoComplete="new-password"
+                placeholder="Create a password"
+              />
+              {errors.password && (
+                <span className="text-sm text-red-500 animate-fade-in">{errors.password.message}</span>
+              )}
+            </div>
+
+            <div className="space-y-2">
+              <label className="block text-sm font-medium text-gray-700">Register as</label>
+              <select
+                className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all duration-200 bg-white"
+                {...register("role", { required: "Role is required" })}
+                defaultValue="user"
+              >
+                <option value="user">User</option>
+                <option value="admin">Admin</option>
+              </select>
+              {errors.role && (
+                <span className="text-sm text-red-500 animate-fade-in">{errors.role.message}</span>
+              )}
+            </div>
+
+            <button
+              type="submit"
+              className="w-full bg-gradient-to-r from-indigo-600 to-purple-600 text-white font-semibold py-3 rounded-lg hover:from-indigo-700 hover:to-purple-700 transform transition-all duration-200 hover:scale-[1.02] focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed"
+              disabled={isSubmitting}
+            >
+              {isSubmitting ? (
+                <span className="flex items-center justify-center">
+                  <svg className="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                    <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                    <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                  </svg>
+                  Creating account...
+                </span>
+              ) : (
+                "Create Account"
+              )}
+            </button>
+          </form>
+
+          <div className="mt-8 text-center">
+            <p className="text-gray-600">
+              Already have an account?{" "}
+              <Link 
+                to="/login" 
+                className="text-indigo-600 hover:text-indigo-500 font-medium transition-colors duration-200"
               >
                 Sign in
               </Link>
-            </div>
-          </form>
-        </Card>
+            </p>
+          </div>
+        </div>
       </div>
     </div>
   );

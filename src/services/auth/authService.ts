@@ -1,5 +1,5 @@
 // src/services/api/authService.ts
-import axiosInstance from "src/services/api/axiosInstance";
+import axiosInstance from "../api/axiosInstance";
 
 export interface LoginRequest {
   username: string;
@@ -37,7 +37,7 @@ export interface JwtResponse {
 const authService = {
   // Login with username and password
   login: async (loginRequest: LoginRequest): Promise<JwtResponse> => {
-    const response = await axiosInstance.post("/auth/signin", loginRequest);
+    const response = await axiosInstance.post("/api/auth/signin", loginRequest);
 
     // If 2FA is not required, store token in local storage
     if (!response.data.mfaRequired) {
@@ -70,7 +70,7 @@ const authService = {
   register: async (
     signupRequest: SignupRequest
   ): Promise<{ message: string }> => {
-    const response = await axiosInstance.post("/auth/signup", signupRequest);
+    const response = await axiosInstance.post("/api/auth/signup", signupRequest);
     return response.data;
   },
 
