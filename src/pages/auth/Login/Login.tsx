@@ -99,7 +99,7 @@ const Login: React.FC = () => {
                 <div className="flex justify-center">
                   <input
                     type="text"
-                    className="text-center w-56 py-4 text-2xl font-mono tracking-widest border-2 border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                    className="text-center w-56 py-4 text-2xl font-mono tracking-widest text-gray-200 bg-gray-800 border-2 border-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                     maxLength={6}
                     value={mfaCode}
                     onChange={(e) =>
@@ -215,7 +215,7 @@ const Login: React.FC = () => {
                   {...register("username", {
                     required: "Username is required",
                   })}
-                  className="pl-10 block w-full rounded-lg border border-gray-300 py-3 px-4 text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                  className="pl-10 block w-full rounded-lg bg-gray-800 border border-gray-700 py-3 px-4 text-gray-200 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                   placeholder="Enter your username"
                   autoComplete="username"
                 />
@@ -252,7 +252,7 @@ const Login: React.FC = () => {
                     required: "Password is required",
                   })}
                   type={showPassword ? "text" : "password"}
-                  className="pl-10 block w-full rounded-lg border border-gray-300 py-3 px-4 text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                  className="pl-10 block w-full rounded-lg bg-gray-800 border border-gray-700 py-3 px-4 text-gray-200 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                   placeholder="Enter your password"
                   autoComplete="current-password"
                 />
@@ -260,7 +260,7 @@ const Login: React.FC = () => {
                   <button
                     type="button"
                     onClick={() => setShowPassword(!showPassword)}
-                    className="text-gray-400 hover:text-gray-500 focus:outline-none"
+                    className="text-gray-400 hover:text-gray-300 focus:outline-none"
                   >
                     {showPassword ? (
                       <svg

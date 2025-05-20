@@ -117,7 +117,7 @@ const Register: React.FC = () => {
                         message: "Username must be at least 3 characters",
                       },
                     })}
-                    className="pl-10 block w-full rounded-lg border border-gray-300 py-3 px-4 text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                    className="pl-10 block w-full rounded-lg bg-gray-800 border border-gray-700 py-3 px-4 text-gray-200 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                     placeholder="Choose a username"
                     autoComplete="username"
                   />
@@ -154,7 +154,7 @@ const Register: React.FC = () => {
                       },
                     })}
                     type="email"
-                    className="pl-10 block w-full rounded-lg border border-gray-300 py-3 px-4 text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                    className="pl-10 block w-full rounded-lg bg-gray-800 border border-gray-700 py-3 px-4 text-gray-200 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                     placeholder="Enter your email"
                     autoComplete="email"
                   />
@@ -202,7 +202,7 @@ const Register: React.FC = () => {
                       },
                     })}
                     type={showPassword ? "text" : "password"}
-                    className="pl-10 block w-full rounded-lg border border-gray-300 py-3 px-4 text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                    className="pl-10 block w-full rounded-lg bg-gray-800 border border-gray-700 py-3 px-4 text-gray-200 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                     placeholder="Create a password"
                     autoComplete="new-password"
                   />
@@ -210,7 +210,7 @@ const Register: React.FC = () => {
                     <button
                       type="button"
                       onClick={() => setShowPassword(!showPassword)}
-                      className="text-gray-400 hover:text-gray-500 focus:outline-none"
+                      className="text-gray-400 hover:text-gray-300 focus:outline-none"
                     >
                       {showPassword ? (
                         <svg
@@ -284,7 +284,7 @@ const Register: React.FC = () => {
                         value === password || "Passwords do not match",
                     })}
                     type={showPassword ? "text" : "password"}
-                    className="pl-10 block w-full rounded-lg border border-gray-300 py-3 px-4 text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                    className="pl-10 block w-full rounded-lg bg-gray-800 border border-gray-700 py-3 px-4 text-gray-200 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                     placeholder="Confirm your password"
                     autoComplete="new-password"
                   />
@@ -318,7 +318,7 @@ const Register: React.FC = () => {
                 </div>
                 <select
                   {...register("role", { required: "Role is required" })}
-                  className="pl-10 block w-full rounded-lg border border-gray-300 py-3 px-4 text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white"
+                  className="pl-10 block w-full rounded-lg bg-gray-800 border border-gray-700 py-3 px-4 text-gray-200 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                   defaultValue="user"
                 >
                   <option value="user">User</option>

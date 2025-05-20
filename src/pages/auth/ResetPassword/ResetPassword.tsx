@@ -44,7 +44,7 @@ const ResetPassword: React.FC = () => {
         newPassword: data.password,
       });
 
-      setSuccess(response.message || "Password has been reset successfully!");
+      setSuccess(response.message);
 
       // Redirect to login after a delay
       setTimeout(() => {
@@ -69,20 +69,7 @@ const ResetPassword: React.FC = () => {
 
           <div className="bg-white/90 backdrop-blur-lg p-8 rounded-2xl shadow-xl border border-gray-200 relative z-10">
             <div className="text-center mb-8">
-              <svg
-                className="mx-auto h-16 w-16 text-red-500"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"
-                />
-              </svg>
-              <h2 className="mt-4 text-3xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-blue-400">
+              <h2 className="text-3xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-blue-400">
                 Invalid Reset Link
               </h2>
               <p className="text-gray-600 mt-2">
@@ -98,7 +85,7 @@ const ResetPassword: React.FC = () => {
             <div className="text-center">
               <Link
                 to="/forgot-password"
-                className="inline-flex items-center px-6 py-3 border border-transparent text-base font-medium rounded-lg text-white bg-blue-500 hover:bg-blue-600 transition-all duration-200 hover:scale-[1.02] focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+                className="inline-flex items-center px-6 py-3 border border-transparent text-base font-medium rounded-lg text-white bg-gradient-to-r from-blue-600 to-blue-400 hover:from-blue-700 hover:to-blue-500 transform transition-all duration-200 hover:scale-[1.02] focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
               >
                 Request new reset link
               </Link>
@@ -174,7 +161,7 @@ const ResetPassword: React.FC = () => {
                     },
                   })}
                   type={showPassword ? "text" : "password"}
-                  className="pl-10 block w-full rounded-lg border border-gray-300 py-3 px-4 text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                  className="pl-10 block w-full rounded-lg bg-gray-800 border border-gray-700 py-3 px-4 text-gray-200 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                   placeholder="Enter new password"
                   autoComplete="new-password"
                   disabled={!!success}
@@ -183,7 +170,7 @@ const ResetPassword: React.FC = () => {
                   <button
                     type="button"
                     onClick={() => setShowPassword(!showPassword)}
-                    className="text-gray-400 hover:text-gray-500 focus:outline-none"
+                    className="text-gray-400 hover:text-gray-300 focus:outline-none"
                   >
                     {showPassword ? (
                       <svg
@@ -229,10 +216,6 @@ const ResetPassword: React.FC = () => {
                   {errors.password.message}
                 </span>
               )}
-              <p className="text-xs text-gray-500">
-                Password must be at least 8 characters and include uppercase,
-                lowercase, number and special character.
-              </p>
             </div>
 
             <div className="space-y-2">
@@ -258,10 +241,10 @@ const ResetPassword: React.FC = () => {
                   {...register("confirmPassword", {
                     required: "Please confirm your password",
                     validate: (value) =>
-                      value === password || "The passwords do not match",
+                      value === password || "Passwords do not match",
                   })}
                   type={showPassword ? "text" : "password"}
-                  className="pl-10 block w-full rounded-lg border border-gray-300 py-3 px-4 text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                  className="pl-10 block w-full rounded-lg bg-gray-800 border border-gray-700 py-3 px-4 text-gray-200 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                   placeholder="Confirm new password"
                   autoComplete="new-password"
                   disabled={!!success}
@@ -312,7 +295,7 @@ const ResetPassword: React.FC = () => {
           <div className="mt-8 text-center">
             <Link
               to="/login"
-              className="text-blue-600 hover:text-blue-500 font-medium transition-colors duration-200"
+              className="font-medium text-blue-600 hover:text-blue-500"
             >
               Back to login
             </Link>
