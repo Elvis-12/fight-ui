@@ -22,7 +22,7 @@ const LandingPage: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-white text-gray-900 font-sans">
-      {/* Navigation Bar - Simplified */}
+      {/* Navigation Bar - With Login */}
       <nav
         className={`fixed w-full z-50 transition-all duration-300 ${
           isScrolled ? "bg-black/90 backdrop-blur-sm py-3" : "bg-black/70 py-5"
@@ -38,8 +38,14 @@ const LandingPage: React.FC = () => {
             </Link>
           </div>
 
-          {/* Sign Up Button Only */}
-          <div>
+          {/* Navigation Links */}
+          <div className="flex items-center space-x-6">
+            <Link
+              to="/login"
+              className="text-white hover:text-blue-300 transition-colors font-medium"
+            >
+              Login
+            </Link>
             <Link
               to="/register"
               className="px-6 py-2 bg-blue-500 text-white font-medium rounded-md hover:bg-blue-600 transition-all shadow-md"
@@ -55,11 +61,11 @@ const LandingPage: React.FC = () => {
         {/* Background image with darker overlay */}
         <div className="absolute inset-0 z-0">
           <img
-            src="/images/airplane-dark.jpg"
+            src="https://images.unsplash.com/photo-1436491865332-7a61a109cc05?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2074&q=80"
             alt="Aircraft"
             className="w-full h-full object-cover"
           />
-          <div className="absolute inset-0 bg-black/60"></div>
+          <div className="absolute inset-0 bg-black/70"></div>
         </div>
 
         {/* Hero Content - Left Aligned like Image 2 */}
