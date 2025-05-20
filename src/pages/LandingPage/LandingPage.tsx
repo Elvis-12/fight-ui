@@ -1,247 +1,284 @@
 // src/pages/LandingPage/LandingPage.tsx
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 
 const LandingPage: React.FC = () => {
+  const [isScrolled, setIsScrolled] = useState(false);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+
+  // Handle navbar transparency on scroll
+  useEffect(() => {
+    const handleScroll = () => {
+      if (window.scrollY > 10) {
+        setIsScrolled(true);
+      } else {
+        setIsScrolled(false);
+      }
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
   return (
-    <div className="min-h-screen bg-white text-black">
-      {/* Navigation Bar */}
-      <nav className="px-6 md:px-12 py-4 flex items-center justify-between bg-black text-white">
-        <div className="flex items-center">
-          <Link to="/" className="text-2xl font-bold tracking-wider">
-            FLYAIR
-          </Link>
-        </div>
-        <div className="hidden md:flex items-center space-x-8">
-          <Link to="/" className="hover:text-gray-300 transition-colors">
-            Home
-          </Link>
-          <Link to="/about" className="hover:text-gray-300 transition-colors">
-            About
-          </Link>
-          <Link to="/contact" className="hover:text-gray-300 transition-colors">
-            Contact
-          </Link>
-          <Link to="/login" className="hover:text-gray-300 transition-colors">
-            Login
-          </Link>
-          <Link
-            to="/register"
-            className="px-4 py-2 bg-white text-black font-medium rounded hover:bg-gray-200 transition-colors"
-          >
-            Sign Up
-          </Link>
-        </div>
-        <div className="md:hidden">
-          <button className="text-white focus:outline-none">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              className="h-6 w-6"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
+    <div className="min-h-screen bg-white text-gray-900 font-sans">
+      {/* Navigation Bar - Simplified */}
+      <nav
+        className={`fixed w-full z-50 transition-all duration-300 ${
+          isScrolled ? "bg-black/90 backdrop-blur-sm py-3" : "bg-black/70 py-5"
+        }`}
+      >
+        <div className="max-w-7xl mx-auto px-6 md:px-12 flex items-center justify-between">
+          <div className="flex items-center">
+            <Link
+              to="/"
+              className="text-2xl font-bold tracking-wider text-white"
             >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M4 6h16M4 12h16M4 18h16"
-              />
-            </svg>
-          </button>
+              FLYAIR
+            </Link>
+          </div>
+
+          {/* Sign Up Button Only */}
+          <div>
+            <Link
+              to="/register"
+              className="px-6 py-2 bg-blue-500 text-white font-medium rounded-md hover:bg-blue-600 transition-all shadow-md"
+            >
+              Sign Up
+            </Link>
+          </div>
         </div>
       </nav>
 
-      {/* Hero Section - Updated to match the provided design */}
-      <section className="relative h-screen flex items-center justify-center bg-gray-200">
+      {/* Hero Section - Full Width, Modern Design */}
+      <section className="h-screen flex items-center relative overflow-hidden">
+        {/* Background image with darker overlay */}
         <div className="absolute inset-0 z-0">
           <img
             src="/images/airplane-dark.jpg"
-            alt="Luxury Jet"
+            alt="Aircraft"
             className="w-full h-full object-cover"
           />
-          <div className="absolute inset-0 bg-black opacity-10"></div>
+          <div className="absolute inset-0 bg-black/60"></div>
         </div>
 
-        <div className="relative z-10 text-center max-w-4xl px-6">
-          <p className="uppercase tracking-wider text-lg md:text-xl mb-2 text-gray-800">
-            Personal Jets
-          </p>
-          <h1 className="text-5xl md:text-7xl font-bold mb-2 text-gray-900">
-            Luxury.
-            <br />
-            Affordable.
-          </h1>
-          <p className="text-xl mb-8 text-gray-800">
-            We believe loyalty should be rewarded.
-          </p>
-          <div className="flex flex-row justify-center gap-4">
-            <button className="px-6 py-2 bg-transparent border border-gray-700 text-gray-800 font-medium rounded-full hover:bg-gray-100 transition-colors">
-              Learn more
-            </button>
-            <button className="px-6 py-2 bg-gray-800 text-white font-medium rounded-full hover:bg-gray-700 transition-colors">
-              Let's Fly
-            </button>
+        {/* Hero Content - Left Aligned like Image 2 */}
+        <div className="relative z-10 container mx-auto px-6 md:px-12">
+          <div className="max-w-3xl">
+            <h5 className="text-lg md:text-xl font-light mb-3 text-white uppercase tracking-widest">
+              EXPERIENCE LUXURY TRAVEL
+            </h5>
+            <h1 className="text-5xl md:text-7xl font-bold mb-2 text-white leading-tight">
+              Fly in Style.
+              <br />
+              <span className="text-blue-400">Beyond Ordinary.</span>
+            </h1>
+            <p className="text-xl mb-8 text-white/90 max-w-2xl">
+              Discover a new standard of air travel with our premium flight
+              booking service.
+            </p>
+            <Link
+              to="/register"
+              className="inline-block px-8 py-4 bg-blue-500 text-white font-medium rounded-md hover:bg-blue-600 transition-all shadow-lg"
+            >
+              Get Started
+            </Link>
           </div>
         </div>
-      </section>
 
-      {/* Features Section */}
-      <section className="py-20 px-6 md:px-12 bg-white">
-        <div className="max-w-7xl mx-auto">
-          <h2 className="text-3xl md:text-4xl font-bold mb-12 text-center text-black">
-            Travel to make memories all around the world
-          </h2>
-
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            <div className="bg-white p-8 rounded-lg text-center shadow-lg transition-transform hover:transform hover:scale-105 border border-gray-200">
-              <div className="w-16 h-16 bg-black text-white rounded-full flex items-center justify-center mx-auto mb-4">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  className="h-8 w-8"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
-                  />
-                </svg>
+        {/* Stats at Bottom like in Image 2 */}
+        <div className="absolute bottom-0 left-0 right-0 bg-black/30 backdrop-blur-sm py-6 z-10">
+          <div className="container mx-auto px-6 md:px-12">
+            <div className="grid grid-cols-3 gap-4">
+              <div className="text-center">
+                <h3 className="text-3xl md:text-4xl font-bold text-white">
+                  200+
+                </h3>
+                <p className="text-sm text-white/70">Destinations Worldwide</p>
               </div>
-              <h3 className="text-xl font-bold mb-2 text-black">
-                Book in minutes
-              </h3>
-              <p className="text-gray-600">
-                Simple and fast booking process to save your time.
-              </p>
-            </div>
-
-            <div className="bg-white p-8 rounded-lg text-center shadow-lg transition-transform hover:transform hover:scale-105 border border-gray-200">
-              <div className="w-16 h-16 bg-black text-white rounded-full flex items-center justify-center mx-auto mb-4">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  className="h-8 w-8"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-                  />
-                </svg>
+              <div className="text-center">
+                <h3 className="text-3xl md:text-4xl font-bold text-white">
+                  35+
+                </h3>
+                <p className="text-sm text-white/70">Premium Aircraft</p>
               </div>
-              <h3 className="text-xl font-bold mb-2 text-black">
-                Smart Selection
-              </h3>
-              <p className="text-gray-600">
-                Curated options to fit your preferences and budget.
-              </p>
-            </div>
-
-            <div className="bg-white p-8 rounded-lg text-center shadow-lg transition-transform hover:transform hover:scale-105 border border-gray-200">
-              <div className="w-16 h-16 bg-black text-white rounded-full flex items-center justify-center mx-auto mb-4">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  className="h-8 w-8"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"
-                  />
-                </svg>
-              </div>
-              <h3 className="text-xl font-bold mb-2 text-black">
-                Secure Travels
-              </h3>
-              <p className="text-gray-600">
-                Your safety is our priority with verified services.
-              </p>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Aircraft Gallery Section */}
-      <section className="py-20 px-6 md:px-12 bg-black">
-        <div className="max-w-7xl mx-auto">
-          <h2 className="text-3xl md:text-4xl font-bold mb-12 text-center text-white">
-            Our Fleet
-          </h2>
-
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <div className="relative overflow-hidden rounded-lg h-72 group">
-              <img
-                src="/images/airplane-side.jpg"
-                alt="Side view of aircraft"
-                className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
-              />
-              <div className="absolute inset-0 bg-black bg-opacity-30 opacity-0 group-hover:opacity-100 flex items-center justify-center transition-opacity duration-300">
-                <span className="text-white text-xl font-bold">Boeing 747</span>
-              </div>
-            </div>
-
-            <div className="relative overflow-hidden rounded-lg h-72 group">
-              <img
-                src="/images/airplane-interior.jpg"
-                alt="Interior view of aircraft"
-                className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
-              />
-              <div className="absolute inset-0 bg-black bg-opacity-30 opacity-0 group-hover:opacity-100 flex items-center justify-center transition-opacity duration-300">
-                <span className="text-white text-xl font-bold">
-                  Premium Cabin
-                </span>
-              </div>
-            </div>
-
-            <div className="relative overflow-hidden rounded-lg h-72 group">
-              <img
-                src="/images/airplane-cockpit.jpg"
-                alt="Cockpit view"
-                className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
-              />
-              <div className="absolute inset-0 bg-black bg-opacity-30 opacity-0 group-hover:opacity-100 flex items-center justify-center transition-opacity duration-300">
-                <span className="text-white text-xl font-bold">
-                  Advanced Cockpit
-                </span>
+              <div className="text-center">
+                <h3 className="text-3xl md:text-4xl font-bold text-white">
+                  150K+
+                </h3>
+                <p className="text-sm text-white/70">Happy Travelers</p>
               </div>
             </div>
           </div>
         </div>
+
+        {/* Scroll down indicator */}
+        <div className="absolute bottom-28 left-1/2 transform -translate-x-1/2 flex flex-col items-center text-white animate-bounce">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            className="h-6 w-6"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={2}
+              d="M19 14l-7 7m0 0l-7-7m7 7V3"
+            />
+          </svg>
+          <span className="text-sm mt-1">Scroll Down</span>
+        </div>
       </section>
 
-      {/* Destinations Section */}
-      <section className="py-20 px-6 md:px-12 bg-white">
+      {/* Features Section - Modern Card Design */}
+      <section className="py-24 px-6 md:px-12 bg-gray-50">
         <div className="max-w-7xl mx-auto">
-          <h2 className="text-3xl md:text-4xl font-bold mb-12 text-center text-black">
-            Popular Destinations
-          </h2>
+          <div className="text-center mb-16">
+            <h6 className="text-primary-600 font-semibold uppercase tracking-wider mb-2">
+              Why Choose Us
+            </h6>
+            <h2 className="text-3xl md:text-5xl font-bold mb-4 text-gray-900">
+              Elevate Your Travel Experience
+            </h2>
+            <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+              Discover the unique advantages that make FLYAIR the preferred
+              choice for modern travelers.
+            </p>
+          </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-            {["Dubai", "Paris", "New York", "Tokyo"].map((city, index) => (
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-10">
+            {[
+              {
+                icon: (
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    className="h-8 w-8"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
+                    />
+                  </svg>
+                ),
+                title: "Lightning Fast Booking",
+                description:
+                  "Book your flight in minutes with our streamlined, intuitive process designed for the modern traveler.",
+              },
+              {
+                icon: (
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    className="h-8 w-8"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2zm7-5a2 2 0 11-4 0 2 2 0 014 0z"
+                    />
+                  </svg>
+                ),
+                title: "Smart Pricing",
+                description:
+                  "Advanced AI-powered pricing ensures you always get the best deals customized to your preferences.",
+              },
+              {
+                icon: (
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    className="h-8 w-8"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"
+                    />
+                  </svg>
+                ),
+                title: "World-Class Security",
+                description:
+                  "Your personal information and payment details are protected with military-grade encryption.",
+              },
+            ].map((feature, index) => (
               <div
                 key={index}
-                className="relative group overflow-hidden rounded-lg h-72 shadow-lg"
+                className="bg-white rounded-2xl p-8 shadow-xl hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 border border-gray-100"
               >
-                <div className="absolute inset-0 bg-gradient-to-t from-black to-transparent z-10"></div>
+                <div className="w-16 h-16 bg-primary-50 text-primary-600 rounded-2xl flex items-center justify-center mb-6">
+                  {feature.icon}
+                </div>
+                <h3 className="text-xl font-bold mb-3 text-gray-900">
+                  {feature.title}
+                </h3>
+                <p className="text-gray-600">{feature.description}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Destinations Section - Modern Grid with Hover Effects */}
+      <section className="py-24 px-6 md:px-12 bg-white">
+        <div className="max-w-7xl mx-auto">
+          <div className="text-center mb-16">
+            <h6 className="text-primary-600 font-semibold uppercase tracking-wider mb-2">
+              Top Choices
+            </h6>
+            <h2 className="text-3xl md:text-5xl font-bold mb-4 text-gray-900">
+              Popular Destinations
+            </h2>
+            <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+              Explore our most sought-after destinations for your next adventure
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+            {[
+              { name: "Dubai", tag: "Modern Luxury" },
+              { name: "Paris", tag: "Romantic Getaway" },
+              { name: "New York", tag: "Urban Experience" },
+              { name: "Tokyo", tag: "Cultural Immersion" },
+            ].map((city, index) => (
+              <div
+                key={index}
+                className="group relative overflow-hidden rounded-2xl h-96 shadow-lg"
+              >
+                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent z-10 opacity-80 group-hover:opacity-90 transition-opacity"></div>
                 <img
                   src={`/images/destination-${index + 1}.jpg`}
-                  alt={city}
-                  className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+                  alt={city.name}
+                  className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
                 />
-                <div className="absolute bottom-0 left-0 right-0 p-6 z-20">
-                  <h3 className="text-xl font-bold text-white">{city}</h3>
-                  <p className="text-gray-200">Explore amazing experiences</p>
+                <div className="absolute bottom-0 left-0 right-0 p-8 z-20 transform translate-y-5 group-hover:translate-y-0 transition-transform duration-500">
+                  <span className="inline-block px-4 py-1 bg-primary-500 text-white text-xs uppercase tracking-wider rounded-full mb-3">
+                    {city.tag}
+                  </span>
+                  <h3 className="text-2xl font-bold text-white mb-2">
+                    {city.name}
+                  </h3>
+                  <p className="text-gray-200 opacity-0 group-hover:opacity-100 transition-opacity duration-500">
+                    Discover amazing experiences tailored just for you
+                  </p>
+                  <a
+                    href="#"
+                    className="inline-block mt-4 text-white font-medium border-b border-white pb-1 opacity-0 group-hover:opacity-100 transition-opacity duration-500"
+                  >
+                    Explore More →
+                  </a>
                 </div>
               </div>
             ))}
@@ -249,188 +286,265 @@ const LandingPage: React.FC = () => {
         </div>
       </section>
 
-      {/* CTA Section with Side Image */}
-      <section className="py-20 px-6 md:px-12 bg-black">
-        <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
-          <div>
-            <img
-              src="/images/airplane-wing.jpg"
-              alt="Airplane wing view"
-              className="rounded-lg shadow-lg w-full h-[400px] object-cover"
-            />
-          </div>
-          <div className="text-white">
-            <h2 className="text-3xl md:text-4xl font-bold mb-4">
-              Plan your travel with confidence
-            </h2>
-            <p className="text-xl mb-8">
-              Find help with your bookings and travel plans, and see what to
-              expect along your journey
-            </p>
-            <Link
-              to="/register"
-              className="inline-block px-8 py-3 bg-white text-black font-bold rounded-md hover:bg-gray-200 transition-colors"
-            >
-              Get Started
-            </Link>
-          </div>
-        </div>
-      </section>
+      {/* Newsletter Section - Modern Design */}
+      <section className="py-24 px-6 md:px-12 bg-gray-50 relative overflow-hidden">
+        {/* Background design elements */}
+        <div className="absolute -top-24 right-0 w-96 h-96 bg-primary-100 rounded-full opacity-50"></div>
+        <div className="absolute -bottom-24 -left-24 w-80 h-80 bg-primary-200 rounded-full opacity-50"></div>
 
-      {/* Newsletter Section */}
-      <section className="py-20 px-6 md:px-12 bg-white">
-        <div className="max-w-4xl mx-auto">
-          <div className="bg-gray-100 p-8 md:p-12 rounded-lg shadow-lg">
-            <h2 className="text-2xl md:text-3xl font-bold mb-4 text-black">
-              Subscribe Newsletter & Get Latest News
-            </h2>
-            <div className="flex flex-col md:flex-row gap-4">
+        <div className="max-w-5xl mx-auto relative z-10">
+          <div className="bg-white p-10 md:p-16 rounded-3xl shadow-xl">
+            <div className="text-center mb-10">
+              <h2 className="text-3xl md:text-4xl font-bold mb-4 text-gray-900">
+                Join Our Community
+              </h2>
+              <p className="text-lg text-gray-600 max-w-2xl mx-auto">
+                Subscribe to our newsletter and be the first to know about
+                exclusive deals, new destinations, and travel tips.
+              </p>
+            </div>
+
+            <form className="flex flex-col md:flex-row gap-4 max-w-3xl mx-auto">
               <input
                 type="email"
-                placeholder="Enter your email"
-                className="flex-grow px-4 py-3 bg-white border border-gray-300 rounded-md focus:outline-none focus:border-black"
+                placeholder="Enter your email address"
+                className="flex-grow px-6 py-4 bg-gray-50 border border-gray-200 rounded-full focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent text-gray-900"
+                required
               />
-              <button className="px-6 py-3 bg-black text-white font-bold rounded-md hover:bg-gray-800 transition-colors">
-                Subscribe
+              <button
+                type="submit"
+                className="px-8 py-4 bg-primary-600 text-white font-medium rounded-full hover:bg-primary-500 transition-colors shadow-md md:whitespace-nowrap"
+              >
+                Subscribe Now
               </button>
+            </form>
+
+            <div className="mt-8 text-center text-gray-500 text-sm">
+              We respect your privacy. Unsubscribe at any time.
             </div>
           </div>
         </div>
       </section>
 
-      {/* Footer */}
-      <footer className="py-12 px-6 md:px-12 bg-black text-white">
-        <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12">
-          <div>
-            <h3 className="text-xl font-bold mb-4">FLYAIR</h3>
-            <p className="text-gray-300 mb-4">
-              The best way to find and book your perfect flight experience
-              around the world.
+      {/* Footer - Modern Design */}
+      <footer className="py-16 px-6 md:px-12 bg-gray-900 text-white relative overflow-hidden">
+        {/* Background design elements */}
+        <div className="absolute bottom-0 right-0 w-1/3 h-1/3 bg-gradient-to-br from-primary-800/20 to-transparent rounded-tl-full"></div>
+
+        <div className="max-w-7xl mx-auto relative z-10">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12">
+            <div>
+              <h3 className="text-2xl font-bold mb-6">FLYAIR</h3>
+              <p className="text-gray-400 mb-6">
+                Redefining the way you experience air travel with premium
+                service and unmatched convenience.
+              </p>
+              <div className="flex space-x-5">
+                <a
+                  href="#"
+                  className="text-gray-400 hover:text-white transition-colors"
+                >
+                  <svg
+                    className="h-6 w-6"
+                    fill="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path d="M24 4.557c-.883.392-1.832.656-2.828.775 1.017-.609 1.798-1.574 2.165-2.724-.951.564-2.005.974-3.127 1.195-.897-.957-2.178-1.555-3.594-1.555-3.179 0-5.515 2.966-4.797 6.045-4.091-.205-7.719-2.165-10.148-5.144-1.29 2.213-.669 5.108 1.523 6.574-.806-.026-1.566-.247-2.229-.616-.054 2.281 1.581 4.415 3.949 4.89-.693.188-1.452.232-2.224.084.626 1.956 2.444 3.379 4.6 3.419-2.07 1.623-4.678 2.348-7.29 2.04 2.179 1.397 4.768 2.212 7.548 2.212 9.142 0 14.307-7.721 13.995-14.646.962-.695 1.797-1.562 2.457-2.549z"></path>
+                  </svg>
+                </a>
+                <a
+                  href="#"
+                  className="text-gray-400 hover:text-white transition-colors"
+                >
+                  <svg
+                    className="h-6 w-6"
+                    fill="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path d="M9 8h-3v4h3v12h5v-12h3.642l.358-4h-4v-1.667c0-.955.192-1.333 1.115-1.333h2.885v-5h-3.808c-3.596 0-5.192 1.583-5.192 4.615v3.385z"></path>
+                  </svg>
+                </a>
+                <a
+                  href="#"
+                  className="text-gray-400 hover:text-white transition-colors"
+                >
+                  <svg
+                    className="h-6 w-6"
+                    fill="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"></path>
+                  </svg>
+                </a>
+              </div>
+            </div>
+
+            <div>
+              <h4 className="text-lg font-semibold mb-6">Quick Links</h4>
+              <ul className="space-y-4">
+                <li>
+                  <Link
+                    to="/"
+                    className="text-gray-400 hover:text-white transition-colors inline-block"
+                  >
+                    Home
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    to="/about"
+                    className="text-gray-400 hover:text-white transition-colors inline-block"
+                  >
+                    About Us
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    to="/destinations"
+                    className="text-gray-400 hover:text-white transition-colors inline-block"
+                  >
+                    Destinations
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    to="/contact"
+                    className="text-gray-400 hover:text-white transition-colors inline-block"
+                  >
+                    Contact
+                  </Link>
+                </li>
+              </ul>
+            </div>
+
+            <div>
+              <h4 className="text-lg font-semibold mb-6">Support</h4>
+              <ul className="space-y-4">
+                <li>
+                  <a
+                    href="#"
+                    className="text-gray-400 hover:text-white transition-colors inline-block"
+                  >
+                    FAQs
+                  </a>
+                </li>
+                <li>
+                  <a
+                    href="#"
+                    className="text-gray-400 hover:text-white transition-colors inline-block"
+                  >
+                    Privacy Policy
+                  </a>
+                </li>
+                <li>
+                  <a
+                    href="#"
+                    className="text-gray-400 hover:text-white transition-colors inline-block"
+                  >
+                    Terms of Service
+                  </a>
+                </li>
+                <li>
+                  <a
+                    href="#"
+                    className="text-gray-400 hover:text-white transition-colors inline-block"
+                  >
+                    Help Center
+                  </a>
+                </li>
+              </ul>
+            </div>
+
+            <div>
+              <h4 className="text-lg font-semibold mb-6">Contact Us</h4>
+              <ul className="space-y-4">
+                <li className="flex items-start space-x-3">
+                  <svg
+                    className="h-6 w-6 text-gray-400 mt-0.5"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth="2"
+                      d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"
+                    />
+                  </svg>
+                  <span className="text-gray-400">info@flyair.com</span>
+                </li>
+                <li className="flex items-start space-x-3">
+                  <svg
+                    className="h-6 w-6 text-gray-400 mt-0.5"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth="2"
+                      d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"
+                    />
+                  </svg>
+                  <span className="text-gray-400">+1 (234) 567-8900</span>
+                </li>
+                <li className="flex items-start space-x-3">
+                  <svg
+                    className="h-6 w-6 text-gray-400 mt-0.5"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth="2"
+                      d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"
+                    />
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth="2"
+                      d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"
+                    />
+                  </svg>
+                  <span className="text-gray-400">
+                    123 Skyway St, Cloud City
+                  </span>
+                </li>
+              </ul>
+            </div>
+          </div>
+
+          <div className="mt-16 pt-8 border-t border-gray-800 flex flex-col md:flex-row justify-between items-center">
+            <p className="text-gray-500 text-sm">
+              &copy; {new Date().getFullYear()} FLYAIR. All rights reserved.
             </p>
-          </div>
-
-          <div>
-            <h3 className="text-lg font-bold mb-4">Quick Links</h3>
-            <ul className="space-y-2">
-              <li>
-                <Link
-                  to="/"
-                  className="text-gray-300 hover:text-white transition-colors"
-                >
-                  Home
-                </Link>
-              </li>
-              <li>
-                <Link
-                  to="/about"
-                  className="text-gray-300 hover:text-white transition-colors"
-                >
-                  About Us
-                </Link>
-              </li>
-              <li>
-                <Link
-                  to="/contact"
-                  className="text-gray-300 hover:text-white transition-colors"
-                >
-                  Contact
-                </Link>
-              </li>
-              <li>
-                <Link
-                  to="/login"
-                  className="text-gray-300 hover:text-white transition-colors"
-                >
-                  Login
-                </Link>
-              </li>
-            </ul>
-          </div>
-
-          <div>
-            <h3 className="text-lg font-bold mb-4">Support</h3>
-            <ul className="space-y-2">
-              <li>
+            <div className="mt-4 md:mt-0">
+              <div className="flex space-x-6">
                 <a
                   href="#"
-                  className="text-gray-300 hover:text-white transition-colors"
-                >
-                  FAQ
-                </a>
-              </li>
-              <li>
-                <a
-                  href="#"
-                  className="text-gray-300 hover:text-white transition-colors"
-                >
-                  Terms of Service
-                </a>
-              </li>
-              <li>
-                <a
-                  href="#"
-                  className="text-gray-300 hover:text-white transition-colors"
+                  className="text-gray-500 hover:text-gray-400 text-sm"
                 >
                   Privacy Policy
                 </a>
-              </li>
-              <li>
                 <a
                   href="#"
-                  className="text-gray-300 hover:text-white transition-colors"
+                  className="text-gray-500 hover:text-gray-400 text-sm"
                 >
-                  Help Center
+                  Terms of Service
                 </a>
-              </li>
-            </ul>
-          </div>
-
-          <div>
-            <h3 className="text-lg font-bold mb-4">Contact Us</h3>
-            <ul className="space-y-2">
-              <li className="text-gray-300">Email: info@flyair.com</li>
-              <li className="text-gray-300">Phone: +1 234 567 8900</li>
-              <li className="text-gray-300">
-                Address: 123 Skyway St, Cloud City
-              </li>
-            </ul>
-            <div className="mt-4 flex space-x-4">
-              <a href="#" className="text-gray-300 hover:text-white">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  className="h-6 w-6"
-                  fill="currentColor"
-                  viewBox="0 0 24 24"
+                <a
+                  href="#"
+                  className="text-gray-500 hover:text-gray-400 text-sm"
                 >
-                  <path d="M24 4.557c-.883.392-1.832.656-2.828.775 1.017-.609 1.798-1.574 2.165-2.724-.951.564-2.005.974-3.127 1.195-.897-.957-2.178-1.555-3.594-1.555-3.179 0-5.515 2.966-4.797 6.045-4.091-.205-7.719-2.165-10.148-5.144-1.29 2.213-.669 5.108 1.523 6.574-.806-.026-1.566-.247-2.229-.616-.054 2.281 1.581 4.415 3.949 4.89-.693.188-1.452.232-2.224.084.626 1.956 2.444 3.379 4.6 3.419-2.07 1.623-4.678 2.348-7.29 2.04 2.179 1.397 4.768 2.212 7.548 2.212 9.142 0 14.307-7.721 13.995-14.646.962-.695 1.797-1.562 2.457-2.549z"></path>
-                </svg>
-              </a>
-              <a href="#" className="text-gray-300 hover:text-white">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  className="h-6 w-6"
-                  fill="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path d="M22.675 0h-21.35c-.732 0-1.325.593-1.325 1.325v21.351c0 .731.593 1.324 1.325 1.324h11.495v-9.294h-3.128v-3.622h3.128v-2.671c0-3.1 1.893-4.788 4.659-4.788 1.325 0 2.463.099 2.795.143v3.24l-1.918.001c-1.504 0-1.795.715-1.795 1.763v2.313h3.587l-.467 3.622h-3.12v9.293h6.116c.73 0 1.323-.593 1.323-1.325v-21.35c0-.732-.593-1.325-1.325-1.325z"></path>
-                </svg>
-              </a>
-              <a href="#" className="text-gray-300 hover:text-white">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  className="h-6 w-6"
-                  fill="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"></path>
-                </svg>
-              </a>
+                  Cookies
+                </a>
+              </div>
             </div>
           </div>
-        </div>
-
-        <div className="mt-12 pt-8 border-t border-gray-800 text-center text-gray-400">
-          <p>&copy; {new Date().getFullYear()} FLYAIR. All rights reserved.</p>
         </div>
       </footer>
     </div>
